@@ -6,10 +6,11 @@ from fastapi.encoders import jsonable_encoder
 from uuid import UUID
 from app.models.blogs import Blogs, BlogCreate, BlogUpdate
 
+
 class Blog(BlogInterface):
-    async def get_blog_id_by_id(self, id:UUID, session:AsyncSession):
+    async def get_blog_id_by_id(self, id: UUID, session: AsyncSession):
         try:
-            statement = select(Blogs).where(Blogs.id==id).where(Blogs.status==True)
+            statement = select(Blogs).where(Blogs.id == id).where(Blogs.status == True)
             blogs = (await session.exec(statement)).one_or_none()
             if blogs:
                 return blogs
@@ -17,9 +18,9 @@ class Blog(BlogInterface):
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{e}")
 
-    async def get_blogs(self, session:AsyncSession):
+    async def get_blogs(self, session: AsyncSession):
         try:
-            statement = select(Blogs).where(Blogs.status==True)
+            statement = select(Blogs).where(Blogs.status == True)
             blogs = (await session.exec(statement)).all()
             if blogs:
                 return blogs
@@ -27,7 +28,7 @@ class Blog(BlogInterface):
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{e}")
 
-    async def create_blog(self, blog_details:BlogCreate, session:AsyncSession):
+    async def create_blog(self, blog_details: BlogCreate, session: AsyncSession):
         try:
             new_blog = Blogs(**jsonable_encoder(blog_details))
             session.add(new_blog)
@@ -37,9 +38,11 @@ class Blog(BlogInterface):
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"{e}")
 
-    async def update_blog_id_by_id(self, id: UUID, blog_update_details:BlogUpdate, session:AsyncSession):
+    async def update_blog_id_by_id(
+        self, id: UUID, blog_update_details: BlogUpdate, session: AsyncSession
+    ):
         try:
-            statement = select(Blogs).where(Blogs.id == id).where(Blogs.status==True)
+            statement = select(Blogs).where(Blogs.id == id).where(Blogs.status == True)
             blog = (await session.exec(statement)).one_or_none()
             if not blog:
                 raise ValueError(f"No blog found in id {id}")
@@ -52,9 +55,9 @@ class Blog(BlogInterface):
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{e}")
 
-    async def delete_blog_id_by_id(self, id:UUID, session:AsyncSession):
+    async def delete_blog_id_by_id(self, id: UUID, session: AsyncSession):
         try:
-            statement = select(Blogs).where(Blogs.id==id).where(Blogs.status==True)
+            statement = select(Blogs).where(Blogs.id == id).where(Blogs.status == True)
             blog = (await session.exec(statement)).one_or_none()
             if not blog:
                 raise ValueError(f"No blog found in id {id}")
