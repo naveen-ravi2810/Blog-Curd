@@ -33,7 +33,7 @@ class Blog(BlogInterface):
             new_blog = Blogs(**jsonable_encoder(blog_details))
             session.add(new_blog)
             await session.commit()
-            session.refresh(new_blog)
+            await session.refresh(new_blog)
             return new_blog
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"{e}")
@@ -50,7 +50,7 @@ class Blog(BlogInterface):
             blog.sqlmodel_update(blog_data)
             session.add(blog)
             await session.commit()
-            session.refresh(blog)
+            await session.refresh(blog)
             return blog
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{e}")

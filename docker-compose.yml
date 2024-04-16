@@ -1,21 +1,21 @@
 services:
 
-  blogs:
+  # blogs:
     
-    build:
-      context: Blogs
-      dockerfile: Dockerfile
-    command: 
-      - sh -c "poetry run alembic upgrade head && poetry run uvicorn main:app --host=0.0.0.0 --port=8000"
-      # - sh -c "./wait-for-it.sh blogs_db:5432 && poetry run alembic upgrade head && poetry run uvicorn main:app --host=0.0.0.0 --port=8000"
-    environment:
-      - db_uri=postgresql+asyncpg://blogs_db:tiger@blogs_db:5435/Blogs
-    volumes:
-      - .:/usr/src/personalised_nudges
-    ports:
-      - 80:80
-    depends_on:
-      - blogs_db
+  #   build:
+  #     context: Blogs
+  #     dockerfile: Dockerfile
+  #   command: 
+  #     - sh -c "poetry run alembic upgrade head && poetry run uvicorn main:app --host=0.0.0.0 --port=8000"
+  #     # - sh -c "./wait-for-it.sh blogs_db:5432 && poetry run alembic upgrade head && poetry run uvicorn main:app --host=0.0.0.0 --port=8000"
+  #   environment:
+  #     - db_uri=postgresql+asyncpg://blogs_db:tiger@blogs_db:5435/Blogs
+  #   volumes:
+  #     - .:/usr/src/personalised_nudges
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - blogs_db
 
   blogs_db:
     image: postgres:12.0-alpine
